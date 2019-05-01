@@ -85,5 +85,5 @@ test:
 production:
   <<: *default
   database: vote4art_production
-  username: vote4art
-  password: <%= ENV['VOTE4ART_DATABASE_PASSWORD'] %>
+  username: roradmin
+  password: Geradb]2019
