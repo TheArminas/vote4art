@@ -23,6 +23,7 @@ class User < ApplicationRecord
   def email_required?
     false
   end
+
   def jwt_payload
     super.merge('test' => 'Ok')
   end
