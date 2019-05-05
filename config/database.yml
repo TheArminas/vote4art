@@ -85,5 +85,7 @@ test:
 production:
   <<: *default
   database: vote4art_production
-  username: roradmin
+  username: postgres  
   password: Geradb]2019
+  host: 127.0.0.1
+  template: template0
