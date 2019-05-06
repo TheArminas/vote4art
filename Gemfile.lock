@@ -83,6 +83,7 @@ GEM
       capistrano (~> 3.7)
       capistrano-bundler
       puma (~> 3.4)
+    coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     devise (4.6.2)
@@ -136,8 +137,12 @@ GEM
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
     pg (1.1.4)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     puma (3.12.1)
     rack (2.0.7)
+    rack-cors (1.0.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.0.rc1)
@@ -221,7 +226,9 @@ DEPENDENCIES
   devise-jwt (~> 0.5.9)
   listen (>= 3.0.5, < 3.2)
   pg (>= 0.18, < 2.0)
+  pry (~> 0.12.2)
   puma (~> 3.11)
+  rack-cors
   rails (~> 6.0.0.rc1)
   spring
   spring-watcher-listen (~> 2.0.0)

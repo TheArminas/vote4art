@@ -13,6 +13,8 @@
 #
 
 class User < ApplicationRecord
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :jwt_authenticatable,
@@ -20,5 +22,8 @@ class User < ApplicationRecord
 
   def email_required?
     false
+  end
+  def jwt_payload
+    super.merge('test' => 'Ok')
   end
 end
