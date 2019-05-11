@@ -12,6 +12,13 @@ module Api
             pixs = Pixel.ready
             Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
           end
+
+          desc 'return pixel by init and ready statuses'
+          get '/' do
+            pixs = Pixel.init_ready
+            Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
+          end
+
           desc 'user info by pixel coordinates'
           params do
             requires :x, type: String
