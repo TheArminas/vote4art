@@ -1,8 +1,11 @@
 class ApplicationController < ActionController::API
   include ActionController::RequestForgeryProtection
+  include ActionController::Cookies
+
   respond_to :json
 
-  protect_from_forgery with: :null_session
+  protect_from_forgery with: :exception
+  
   before_action :authenticate_user!
 
   def render_resource(resource)

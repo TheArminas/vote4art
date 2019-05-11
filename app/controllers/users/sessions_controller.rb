@@ -17,13 +17,12 @@ class Users::SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
     yield resource if block_given?
-
-    render json: {response: "Authentication successful. JWT token included in this response."}
+    render json: {success: true, jwt: current_token, response: "Authentication successful" }
   end
   def destroy
-  binding.pry
   end
   private
+  
 
   # warden uses request.params values when doinh authentication.
   # Lets rewrite params from json to correct format for warden.

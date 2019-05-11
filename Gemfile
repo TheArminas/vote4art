@@ -8,6 +8,8 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'devise'
 gem 'devise-jwt', '~> 0.5.9'
+gem 'omniauth-facebook'
+
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rack-cors'
 

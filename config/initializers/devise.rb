@@ -260,6 +260,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  # config.omniauth :facebook, "284507289101227", "7eee9af7fbe1bf7c4ecc7655423c4a12", token_params: { parse: :json }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
@@ -302,7 +303,9 @@ Devise.setup do |config|
     jwt.secret = 'd60b9cd5cc9f39debfbcf480a94d18384c1fb1ab1eb88597931538367bab3c80fdcf7a9f3bba5cb12a9d734733671814556e91377ae9815bb96097d3ef70db13'
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}],
-      ['POST', %r{^/signup$}]
+      ['POST', %r{^/signup$}],
+      ['GET', %r{^/auth/facebook$}]
+
 
     ]
     jwt.revocation_requests = [

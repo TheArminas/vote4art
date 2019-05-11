@@ -9,6 +9,7 @@ Rails.application.routes.draw do
              },
              controllers: {
                sessions: 'users/sessions',
-               registrations: 'users/registrations'
+               registrations: 'users/registrations',
+              #  omniauth_callbacks: 'users/omniauth_callbacks'
              }
 end
