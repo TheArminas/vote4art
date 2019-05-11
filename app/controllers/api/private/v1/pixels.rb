@@ -34,9 +34,12 @@ module Api
             Api::Private::V1::Serializers::PixelSerializer.new(pixel).serialized_json
           end
 
+          params do
+           requires :x, type: Integer
+           requires :y, type: Integer
+           requires :color, type: String
+         end
           post '/' do
-            hey = params.keys.first
-            par = JSON.parse(hey).symbolize_keys
             User.last.pixels.create(par)
           end
         end
