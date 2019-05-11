@@ -35,6 +35,7 @@ class User < ApplicationRecord
   def email_required?
     false
   end
+
   def jwt_payload
     binding.pry
     super.merge('test' => 'Ok')

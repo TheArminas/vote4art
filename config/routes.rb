@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Api::Base => '/'
+
   devise_for :users,
              path: '',
              defaults: { format: :json },
