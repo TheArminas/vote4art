@@ -7,7 +7,6 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'fast_jsonapi'
 gem 'devise'
 gem 'devise-jwt', '~> 0.5.9'
-gem 'omniauth-facebook'
 gem 'grape'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
