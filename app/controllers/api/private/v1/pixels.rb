@@ -9,7 +9,7 @@ module Api
         resource :pixels do
           desc 'returns active pixels'
           get :ready do
-            pixs = Pixel.ready
+            pixs = Pixel.all
             Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
           end
           desc 'user info by pixel coordinates'
@@ -28,9 +28,8 @@ module Api
           end
 
           post '/' do
-            hey = params.keys.first
-            par = JSON.parse(hey).symbolize_keys
-            User.last.pixels.create(par)
+
+            User.last.pixels.create(params)
           end
         end
       end

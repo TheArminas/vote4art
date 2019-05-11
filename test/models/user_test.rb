@@ -11,6 +11,9 @@
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime
 #  remember_created_at    :datetime
+#  jti                    :string
+#  provider               :string
+#  uid                    :string
 #
 
 =======

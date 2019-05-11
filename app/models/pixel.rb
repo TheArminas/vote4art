@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: pixels
+#
+#  id         :bigint           not null, primary key
+#  color      :string
+#  user_id    :bigint           not null
+#  x          :string
+#  y          :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  status     :integer          default("init")
+#
+
 class Pixel < ApplicationRecord
   belongs_to :user
 
@@ -18,7 +32,7 @@ class Pixel < ApplicationRecord
   private
 
   def check_count
-    if Pixel.where(status: 0).count >= 500
+    if Pixel.where(status: 0).count >= 10
       Pixel.update_all(status: 1)
     end
   end
