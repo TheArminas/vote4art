@@ -23,6 +23,12 @@ class Pixel < ApplicationRecord
     select('distinct on(x, y) x, y, color, user_id')
       .order(:x)
   }
+
+  scope :init_ready, lambda {
+    select('distinct on(x, y) x, y, color, user_id')
+      .order(:x)
+  }
+
   scope :by_coordinates, ->(params) { where('pixels.x = ? AND pixels.y = ?', params[:x], params[:y]) }
 
   enum status: %i[init ready]
