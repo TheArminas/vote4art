@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
 
   protect_from_forgery with: :exception
   
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
 
   def render_resource(resource)
     if resource.errors.empty?

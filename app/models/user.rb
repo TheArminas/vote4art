@@ -17,9 +17,12 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, :jwt_authenticatable, :omniauthable,       
+  devise :database_authenticatable, :registerable, :jwt_authenticatable, :omniauthable,
          jwt_revocation_strategy: JWTBlacklist,
          omniauth_providers: %i[facebook]
+
+  has_many :pixels
+
 
   def self.from_omniauth(auth)
     binding.pry
@@ -37,11 +40,8 @@ class User < ApplicationRecord
   end
 
   def jwt_payload
-    binding.pry
     super.merge('test' => 'Ok')
   end
   def on_jwt_dispatch(token, payload)
-    binding.pry
-
   end
 end

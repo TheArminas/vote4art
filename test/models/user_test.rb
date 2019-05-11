@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # == Schema Information
 #
 # Table name: users
@@ -12,6 +13,8 @@
 #  remember_created_at    :datetime
 #
 
+=======
+>>>>>>> pixel
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
