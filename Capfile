@@ -4,6 +4,8 @@ require "capistrano/setup"
 # Include default deployment tasks
 require "capistrano/deploy"
 
+# https://github.com/dei79/capistrano-rails-collection
+# require 'capistrano/rails/collection'
 
 require 'capistrano/rvm'
 require 'capistrano/bundler'
