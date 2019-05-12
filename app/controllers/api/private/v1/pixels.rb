@@ -41,6 +41,7 @@ module Api
          end
           post '/' do
             User.last.pixels.create(par)
+            Api::Private::V1::Serializers::PhotoSerializer.new(Photo.last).serialized_json
           end
         end
       end

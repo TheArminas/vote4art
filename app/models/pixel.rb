@@ -40,6 +40,7 @@ class Pixel < ApplicationRecord
   def check_count
     if Pixel.where(status: 0).count >= 400
       Pixel.update_all(status: 1)
+      Generators::Photo.new(Pixel.init_ready.pluck(:x, :y, :color)).connect
     end
   end
 end
