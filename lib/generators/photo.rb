@@ -6,7 +6,6 @@ module Generators
       @pixels = pixels
     end
 
-
     def connect
       headers = {
         'Content-Type': 'application/json',
