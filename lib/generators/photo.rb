@@ -1,6 +1,6 @@
 module Generators
   class Photo
-    END_POINT = 'http://localhost:20177/pixels'
+    END_POINT = 'http://nuotraukos.vote4art.eu:20177/pixels'
 
     def initialize(pixels:)
       @pixels = pixels
