@@ -9,14 +9,14 @@ module Api
         resource :pixels do
           desc 'returns active pixels'
           get :ready do
-            pixs = Pixel.all
-            Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
+            pixs = Pixel.ready
+            Api::Private::V1::Serializers::PixelSerializer.new(pixs, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
           end
 
           desc 'return pixel by init and ready statuses'
           get '/' do
             pixs = Pixel.init_ready
-            Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
+            Api::Private::V1::Serializers::PixelSerializer.new(pixs, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
           end
 
           desc 'user info by pixel coordinates'
@@ -26,12 +26,12 @@ module Api
           end
           get :user_info do
             user = Pixel.by_coordinates(params).first.user
-            Api::Private::V1::Serializers::UserSerializer.new(user).serialized_json
+            Api::Private::V1::Serializers::UserSerializer.new(user, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
           end
 
           get :last do
             pixel = User.last.pixels.last
-            Api::Private::V1::Serializers::PixelSerializer.new(pixel).serialized_json
+            Api::Private::V1::Serializers::PixelSerializer.new(pixel, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
           end
 
           params do
@@ -41,6 +41,8 @@ module Api
          end
           post '/' do
             User.last.pixels.create(params)
+            pixs = Pixel.ready
+            Api::Private::V1::Serializers::PixelSerializer.new(pixs, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
           end
         end
       end
