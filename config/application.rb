@@ -30,6 +30,9 @@ module Vote4art
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
+    config.autoload_paths += %W[
+      #{Rails.root.join('lib')}
+    ]
     config.api_only = true
     config.middleware.use ActionDispatch::Flash
     # config.middleware.insert_after ActiveRecord::Migration::CheckPending, ActionDispatch::Cookies
