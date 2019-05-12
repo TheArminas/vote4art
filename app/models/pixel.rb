@@ -20,18 +20,20 @@ class Pixel < ApplicationRecord
   validates :y, length: { in: 0..1000 }
 
   scope :ready, lambda {
-    select('distinct on(x, y) x, y, color, user_id')
+    where(status: [0, 1])
+      .select('distinct on(x, y) x, y, color, user_id')
       .order(:x)
   }
 
   scope :init_ready, lambda {
-    select('distinct on(x, y) x, y, color, user_id')
+    where(status: 0)
+      .select('distinct on(x, y) x, y, color, user_id')
       .order(:x)
   }
 
   scope :by_coordinates, ->(params) { where('pixels.x = ? AND pixels.y = ?', params[:x], params[:y]) }
 
-  enum status: %i[init ready]
+  enum status: %i[init ready, safe]
 
   after_commit :check_count
 
@@ -39,8 +41,11 @@ class Pixel < ApplicationRecord
 
   def check_count
     if Pixel.where(status: 0).count >= 10
-      Pixel.update_all(status: 1)
-      Generators::Photo.new(pixels: Pixel.init_ready.pluck(:x, :y, :color)).connect
+      resp = Generators::Photo.new(pixels: Pixel.init_ready.pluck(:x, :y, :color)).connect
+      if resp
+        Pixel.where(status: 1).update_all(status: 2)
+        Pixel.where(status: 0).update_all(status: 1)
+      end 
     end
   end
 end

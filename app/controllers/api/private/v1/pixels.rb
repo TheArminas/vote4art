@@ -40,9 +40,7 @@ module Api
            requires :color, type: String
          end
           post '/' do
-
             User.last.pixels.create(params)
-            Api::Private::V1::Serializers::PhotoSerializer.new(Photo.last).serialized_json
           end
         end
       end

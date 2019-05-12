@@ -1,25 +1,27 @@
 module Generators
   class Photo
-    END_POINT = 'http://vote4art.eu:20177'
+    END_POINT = 'http://localhost:20177/pixels'
 
     def initialize(pixels:)
       @pixels = pixels
     end
 
-    headers = {
-      'Content-Type': 'application/json',
-      'kasyra': 'naujas prikolas'
-    }
 
     def connect
+      headers = {
+        'Content-Type': 'application/json',
+        'kasyra': 'naujas prikolas'
+      }
+  
       res = HTTP.headers(headers).post(END_POINT,
                                          json: {
                                            pixels: pixels.to_json,
-                                           url: Photo.last&.url
-                                         } 
+                                           url: Class.const_get('Photo').last&.url
+                                         }
                                        )
-      if res.status.to_sym == :created
-        Photo.create(url: res.body.url, name: res.body.name)
+      if res.status.to_sym == :ok
+        data = JSON.parse(res.body)
+        ::Photo.create(url: data["photo_path"], name: data["domain"])
       end
     end
 
