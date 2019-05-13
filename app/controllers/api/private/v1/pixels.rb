@@ -6,6 +6,8 @@ module Api
         prefix :api
         format :json
 
+        helpers Api::Private::V1::Helpers::Auth
+
         resource :pixels do
           desc 'returns active pixels'
           get :ready do
@@ -30,8 +32,10 @@ module Api
           end
 
           get :last do
-            pixel = User.last.pixels.last
-            Api::Private::V1::Serializers::PixelSerializer.new(pixel).serialized_json
+            if authorize
+              pixel = current_user.pixels.last
+              Api::Private::V1::Serializers::PixelSerializer.new(pixel).serialized_json
+            end
           end
 
           params do
@@ -41,8 +45,10 @@ module Api
          end
           post '/' do
 
-            User.last.pixels.create(params)
-            Api::Private::V1::Serializers::PhotoSerializer.new(Photo.last).serialized_json
+            if authorize
+              current_user.pixels.create(params)
+              Api::Private::V1::Serializers::PhotoSerializer.new(Photo.last).serialized_json
+            end
           end
         end
       end
