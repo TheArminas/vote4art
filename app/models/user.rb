@@ -16,23 +16,33 @@
 #
 
 class User < ApplicationRecord
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, :jwt_authenticatable,
-         jwt_revocation_strategy: JWTBlacklist
+  devise :database_authenticatable, :registerable
 
   has_many :pixels
 
+  def self.find_or_create_with_facebook_access_token(oauth_access_token)
+    return unless oauth_access_token
+    graph = Koala::Facebook::API.new(oauth_access_token)
+    profile = graph.get_object('me', fields: ['name', 'email'])
 
+    data = {
+      username: profile['name'],
+      uid: profile['id'],
+      provider: 'facebook',
+      # oauth_token: oauth_access_token,
+      password: SecureRandom.urlsafe_base64
+    }
+
+    if user = User.find_by(uid: data['uid'], provider: 'facebook')
+      user.update_attributes(data)
+    else
+      User.create(data)
+    end
+  end
 
   def email_required?
     false
-  end
-
-  def jwt_payload
-    super.merge('test' => 'Ok')
-  end
-  def on_jwt_dispatch(token, payload)
   end
 end
