@@ -30,6 +30,15 @@ class User < ApplicationRecord
     false
   end
 
+  def available_pixel
+    totalTime = 86400; # atstumas tarp apdavonojimo
+    pixel_in_day = 24; # apdovanojimu visame atsume
+    pixel_count = totalTime / pixel_in_day # vienas tarpas
+    time_start_at = (Date.today.to_time(:utc).to_i - 14400) # atimti sekundes utc iki pradzios  pvz: dabar 23H;
+    time_now = Time.now.utc.to_i
+    (time_now - time_start_at) / pixel_count  #  atimti dienos padetus pikselius
+  end
+  
   def jwt_payload
     super.merge('test' => 'Ok')
   end
