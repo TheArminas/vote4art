@@ -45,4 +45,17 @@ class User < ApplicationRecord
   def email_required?
     false
   end
+
+  def available_pixel
+    total_time = 86400;
+    pixel_in_day = 24;
+    pixel = total_time / pixel_in_day
+    t1 = ((Time.now).beginning_of_day).to_i
+    t2 = (Time.now).to_i
+    (((t2 - t1))) / pixel + 1 #  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
+  end
+
+  def jwt_payload
+    super.merge('test' => 'Ok')
+  end
 end
