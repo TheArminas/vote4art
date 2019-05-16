@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -16,7 +18,6 @@
 #
 
 class User < ApplicationRecord
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :jwt_authenticatable,
@@ -24,24 +25,22 @@ class User < ApplicationRecord
 
   has_many :pixels
 
-
-
   def email_required?
     false
   end
 
   def available_pixel
-    totalTime = 86400; # atstumas tarp apdavonojimo
-    pixel_in_day = 24; # apdovanojimu visame atsume
-    pixel_count = totalTime / pixel_in_day # vienas tarpas
-    time_start_at = (Date.today.to_time(:utc).to_i - 14400) # atimti sekundes utc iki pradzios  pvz: dabar 23H;
-    time_now = Time.now.utc.to_i
-    (time_now - time_start_at) / pixel_count  #  atimti dienos padetus pikselius
+    total_time = 86_400;
+    pixel_in_day = 24;
+    pixel = total_time / pixel_in_day
+    t1 = (Time.now).beginning_of_day.to_time.to_i
+    t2 = (Time.now).to_i
+    (((t2 - t1))) / pixel + 1 #  pridedam atimti count sosdienos;
   end
-  
+
   def jwt_payload
     super.merge('test' => 'Ok')
   end
-  def on_jwt_dispatch(token, payload)
-  end
+
+  def on_jwt_dispatch(token, payload); end
 end
