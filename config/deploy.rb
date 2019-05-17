@@ -1,6 +1,6 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.11.0"
-server 'webmiko.com', port: 20167, roles: [:web, :app, :db], primary: true
+server 'bfcc6.l.dedikuoti.lt', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url, "git@github.com:TheArminas/vote4art.git"
 
