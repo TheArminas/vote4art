@@ -1,6 +1,6 @@
 module Generators
   class Photo
-    END_POINT = 'http://webmiko.com:20177/pixels'
+    END_POINT = 'https://apinode.vote4art.eu'
 
     def initialize(pixels:)
       @pixels = pixels
