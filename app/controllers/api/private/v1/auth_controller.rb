@@ -12,9 +12,19 @@ module Api
 
         def create
           self.resource = warden.authenticate!(auth_options)
-          c_token = JsonWebToken.encode(user_id: resource.id)
-          sign_in(resource_name, resource)
-          render json: { success: true, jwt: c_token, response: 'Authentication successful' }
+          current_jwt = JsonWebToken.encode(user_id: resource.id)
+          return if JwtBlacklist.find_by(jti: current_jwt)
+          if sign_in(resource_name, resource)
+            response.headers["Authorization"] = current_jwt
+            render json: { 
+              status: 'Authenticated',
+              response: { 
+                user: {
+                  active: resource.terms_and_conditions,
+                },
+              }
+            }
+          end
         end
 
         def fb
@@ -22,16 +32,34 @@ module Api
           user = User.find_or_create_with_facebook_access_token(facebook_access_token)
 
           if user && user.persisted?
-            c_token = JsonWebToken.encode(user_id: user.id)
-            render json: { success: true, jwt: c_token, response: {user: user} }
-            
+            current_jwt = JsonWebToken.encode(user_id: user.id)
+
+            response.headers["Authorization"] = current_jwt
+            render json: { 
+              status: 'Authenticated',
+              response: { 
+                user: {
+                  active: resource.terms_and_conditions,
+                },
+              }
+            }
           else
             render json: { response: 'Facebook access token missing' }
           end
         end
         
-        def destroy; end
+        def destroy
+          if headers['Authorization'].present?
+            JwtBlackilist.create(jti: headers['Authorization'].split(' ').last)
+            render json: { succes: true, msg: 'User logged out  successfully'}
+
+          else
+            render json: { status: 'error', msg: 'Missing authorization key' }
+          end
+        end
+
         private
+
         def rewrite_param_names
           request.params[:user] = {username: request.params[:username], password: request.params[:password]}
         end
