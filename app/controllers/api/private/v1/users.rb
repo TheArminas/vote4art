@@ -6,6 +6,8 @@ module Api
         prefix :api
         format :json
 
+        rescue_from :all
+
         helpers Api::Private::V1::Helpers::Auth
 
         resource :users do
@@ -16,6 +18,13 @@ module Api
           put :accept_conditions do
             if authorize
               current_user.update_attribute(:terms_and_conditions, params[:terms_and_conditions])
+              Api::Private::V1::Serializers::UserSerializer.new(current_user).serialized_json
+            end
+          end
+
+          desc 'returns user info'
+          get :info do
+            if authorize
               Api::Private::V1::Serializers::UserSerializer.new(current_user).serialized_json
             end
           end
