@@ -20,6 +20,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable
 
+  enum status: %i[rewarded commercial]
+
   has_many :pixels
 
   def self.find_or_create_with_facebook_access_token(oauth_access_token)
@@ -46,7 +48,7 @@ class User < ApplicationRecord
     false
   end
 
-  def available_pixel
+  def available_pixels
     total_time = 86400;
     pixel_in_day = 24;
     pixel = total_time / pixel_in_day
