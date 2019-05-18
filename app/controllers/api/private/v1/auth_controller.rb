@@ -17,12 +17,7 @@ module Api
           if sign_in(resource_name, resource)
             response.headers["Authorization"] = current_jwt
             render json: { 
-              status: 'Authenticated',
-              response: { 
-                user: {
-                  active: resource.terms_and_conditions,
-                },
-              }
+              status:  (resource.terms_and_conditions ? 'active' : 'authenticated')
             }
           end
         end
@@ -36,15 +31,10 @@ module Api
 
             response.headers["Authorization"] = current_jwt
             render json: { 
-              status: 'Authenticated',
-              response: { 
-                user: {
-                  active: resource.terms_and_conditions,
-                },
-              }
+              status: (user.terms_and_conditions ? 'active' : 'authenticated')
             }
           else
-            render json: { response: 'Facebook access token missing' }
+            render json: { msg: 'Facebook access token missing' }, status: 401
           end
         end
         
@@ -54,7 +44,7 @@ module Api
             render json: { succes: true, msg: 'User logged out  successfully'}
 
           else
-            render json: { status: 'error', msg: 'Missing authorization key' }
+            render json: { msg: 'Missing authorization key' }
           end
         end
 
