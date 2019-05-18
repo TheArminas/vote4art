@@ -20,7 +20,7 @@ module Api
             requires :accept, type: Boolean
           end
           put :accept_conditions do
-            current_user.update_attribute(:terms_and_conditions, params[:terms_and_conditions])
+            current_user.update_attribute(:terms_and_conditions, params[:accept])
             Api::Private::V1::Serializers::UserSerializer.new(current_user).serialized_json
           end
 
