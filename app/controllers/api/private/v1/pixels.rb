@@ -9,16 +9,19 @@ module Api
         helpers Api::Private::V1::Helpers::Auth
 
         resource :pixels do
+          before do
+            authorize
+          end
           desc 'returns active pixels'
           get :ready do
             pixs = Pixel.ready
-            Api::Private::V1::Serializers::PixelSerializer.new(pixs, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
+            Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
           end
 
           desc 'return pixel by init and ready statuses'
           get '/' do
             pixs = Pixel.init_ready
-            Api::Private::V1::Serializers::PixelSerializer.new(pixs, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
+            Api::Private::V1::Serializers::PixelSerializer.new(pixs).serialized_json
           end
 
           desc 'user info by pixel coordinates'
@@ -28,14 +31,12 @@ module Api
           end
           get :user_info do
             user = Pixel.by_coordinates(params).first.user
-            Api::Private::V1::Serializers::UserSerializer.new(user, {meta: {photo: Class.const_get('Photo').last&.url}}).serialized_json
+            Api::Private::V1::Serializers::UserSerializer.new(user).serialized_json
           end
 
           get :last do
-            if authorize
-              pixel = current_user.pixels.last
-              Api::Private::V1::Serializers::PixelSerializer.new(pixel).serialized_json
-            end
+            pixel = current_user.pixels.last
+            Api::Private::V1::Serializers::PixelSerializer.new(pixel).serialized_json
           end
 
           params do
@@ -44,10 +45,8 @@ module Api
            requires :color, type: String
          end
           post '/' do
-            if authorize
-              current_user.pixels.create(params)
-              Api::Private::V1::Serializers::PhotoSerializer.new(Photo.last).serialized_json
-            end
+            current_user.pixels.create(params)
+            Api::Private::V1::Serializers::PhotoSerializer.new(Photo.last).serialized_json
           end
         end
       end
