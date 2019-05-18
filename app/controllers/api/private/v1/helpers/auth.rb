@@ -11,9 +11,11 @@ module Api
 
           def decoded_auth_token
             @decoded_auth_token ||= JsonWebToken.decode(http_auth_header)
+            @decoded_auth_token&.symbolize_keys
           end
 
           def http_auth_header
+            
             if headers['Authorization'].present?
               return headers['Authorization'].split(' ').last
             else

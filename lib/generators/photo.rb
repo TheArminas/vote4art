@@ -18,7 +18,6 @@ module Generators
           pixels: pixels,
           url: Class.const_get('Photo').last&.url ||= false
         })
-        binding.pry
       if res.status.to_sym == :ok
         data = JSON.parse(res.body)
         ::Photo.create(url: data["photo_path"], name: data["domain"])

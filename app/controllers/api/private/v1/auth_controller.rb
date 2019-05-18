@@ -30,7 +30,7 @@ module Api
             current_jwt = JsonWebToken.encode(user_id: user.id)
 
             response.headers["Authorization"] = current_jwt
-            render json: { 
+z            render json: { 
               status: (user.terms_and_conditions ? 'active' : 'authenticated')
             }
           else

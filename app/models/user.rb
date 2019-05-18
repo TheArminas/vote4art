@@ -31,7 +31,7 @@ class User < ApplicationRecord
     graph = Koala::Facebook::API.new(oauth_access_token)
     profile = graph.get_object('me', fields: ['name', 'email'])
 
-    user = User.find_or_create_by(uid: data['uid']) do |user|
+    user = User.find_or_create_by(uid: profile['id']) do |user|
       return user unless user.new_record?
       user.username = profile['name']
       user.uid = profile['id']
