@@ -5,7 +5,7 @@ server 'bfcc6.l.dedikuoti.lt', port: 22, roles: [:web, :app, :db], primary: true
 set :repo_url, "git@github.com:TheArminas/vote4art.git"
 
 set :application, "vote4art"
-set :user,            'roradmin'
+set :user,            'admin'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 
