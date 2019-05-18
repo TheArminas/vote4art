@@ -46,7 +46,7 @@ module Vote4art
         resource '*',
           headers: :any,
           methods: :any,
-          # expose: %w(Authorization),
+          expose: %w(Authorization),
           max_age: 600
       end
     end

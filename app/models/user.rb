@@ -20,6 +20,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable
 
+  validates :username, presence: true
+  validates :password, presence: true
   has_many :pixels
 
   def self.find_or_create_with_facebook_access_token(oauth_access_token)

@@ -4,7 +4,7 @@ module Api
       module Helpers
         module Auth
           def authorize
-            current_user
+            http_auth_header
           end
           
           private
@@ -17,9 +17,8 @@ module Api
             if headers['Authorization'].present?
               return headers['Authorization'].split(' ').last
             else
-              present json: { msg: 'Authentication required' }, status: 401
+              error!(msg: "Autorizacija privaloma", status: 401)
             end
-            nil
           end
 
           def current_user

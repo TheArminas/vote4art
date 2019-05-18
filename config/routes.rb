@@ -13,6 +13,6 @@ Rails.application.routes.draw do
              }
   devise_scope :user do
     get '/auth/:provider', to: 'api/private/v1/auth#fb'
-    post '/signup', to: 'api/private/v1/registrations#create'
+    post '/api/v1/signup', to: 'api/private/v1/registrations#create'
   end
 end

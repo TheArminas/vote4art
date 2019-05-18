@@ -13,7 +13,7 @@ module Api
         def create
           self.resource = warden.authenticate!(auth_options)
           current_jwt = JsonWebToken.encode(user_id: resource.id)
-          return if JwtBlacklist.find_by(jti: current_jwt)
+          # return if JwtBlacklist.find_by(jti: current_jwt)
           if sign_in(resource_name, resource)
             response.headers["Authorization"] = current_jwt
             render json: { 
