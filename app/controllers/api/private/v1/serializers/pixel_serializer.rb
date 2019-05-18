@@ -6,12 +6,12 @@ module Api
           include FastJsonapi::ObjectSerializer
 
           attributes :id, :x, :y, :color
-
-          meta do |pixel|
-            {
-              photo: Class.const_get('Photo').last&.url
-            }
-          end
+          # dubluoja per visus irasus
+          # meta do |pixel|
+          #   {
+          #     photo: Class.const_get('Photo').last&.url
+          #   }
+          # end
         end
       end
     end
