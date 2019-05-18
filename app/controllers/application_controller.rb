@@ -5,6 +5,7 @@ class ApplicationController < ActionController::API
   respond_to :json
 
   protect_from_forgery with: :exception
+  before_action :set_locale
   
   # before_action :authenticate_user!
 
@@ -27,5 +28,11 @@ class ApplicationController < ActionController::API
         }
       ]
     }, status: :bad_request
+  end
+
+  private
+
+  def set_locale
+   I18n.locale = 'lt'
   end
 end
