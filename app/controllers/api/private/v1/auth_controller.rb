@@ -26,7 +26,7 @@ module Api
           facebook_access_token = params.require(:facebook_access_token) if params[:facebook_access_token].present?
           user = User.find_or_create_with_facebook_access_token(facebook_access_token)
 
-          if user && user.persisted?
+          if user
             current_jwt = JsonWebToken.encode(user_id: user.id)
 
             response.headers["Authorization"] = current_jwt
