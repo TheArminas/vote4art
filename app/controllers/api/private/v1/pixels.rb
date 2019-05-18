@@ -41,6 +41,7 @@ module Api
         resource :pixels do
           before do
             authorize
+            @serializer_options = { meta: {photo: Class.const_get('Photo').last&.url} }
           end
           get :last do
             pixel = current_user.pixels.last
