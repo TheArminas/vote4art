@@ -31,19 +31,15 @@ class User < ApplicationRecord
     graph = Koala::Facebook::API.new(oauth_access_token)
     profile = graph.get_object('me', fields: ['name', 'email'])
 
-    data = {
-      username: profile['name'],
-      uid: profile['id'],
-      provider: 'facebook',
-      # oauth_token: oauth_access_token,
-      password: SecureRandom.urlsafe_base64
-    }
-
-    if user = User.find_by(uid: data['uid'], provider: 'facebook')
-      user.update_attributes(data)
-    else
-      User.create(data)
+    user = User.find_or_create_by(uid: data['uid']) do |user|
+      return user unless user.new_record?
+      user.username = profile['name']
+      user.uid = profile['id']
+      user.provider = 'facebook'
+      user.password = profile['id']
+      user.save
     end
+    user
   end
 
   def email_required?
