@@ -18,13 +18,18 @@ module Api
           resource :pixels do
             desc 'returns active pixels'
             get :ready do
-              pixs = Pixel.ready
-              Api::Private::V1::Serializers::PixelSerializer.new(pixs,  @serializer_options).serialized_json
+              Api::Private::V1::Serializers::PixelSerializer.new(
+                Pixel.ready,
+                @serializer_options
+              ).serialized_json
             end
             desc 'return pixel by init and ready statuses'
             get '/' do
               pixs = Pixel.init_ready
-              Api::Private::V1::Serializers::PixelSerializer.new(pixs,  @serializer_options).serialized_json
+              Api::Private::V1::Serializers::PixelSerializer.new(
+                pixs,
+                @serializer_options
+              ).serialized_json
             end
             desc 'user info by pixel coordinates'
             params do
