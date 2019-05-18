@@ -56,7 +56,7 @@ module Api
           post '/' do
             pixel = current_user.pixels.create(params)
             if pixel.persisted?
-              Api::Private::V1::Serializers::PixelSerializer.new(pixel, @serializer_options).serialized_json
+              Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
             end
           end
         end
