@@ -36,12 +36,13 @@ class Pixel < ApplicationRecord
   enum status: %i[init ready, safe]
 
   after_commit :check_count
-  after_create :set_increase_pix
+  after_create :set_increment_pix
 
   private
 
-  def set_increase_pix
+  def set_increment_pix
     user.increment!(:pixels_today)
+    user.save
   end
 
   def check_count

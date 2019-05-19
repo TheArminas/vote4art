@@ -8,11 +8,13 @@ module Api
           attributes :username, :provider
 
           meta do |user|
+            binding.pry
+
             {
               active: user.terms_and_conditions,
               status: user.terms_and_conditions ? :success : :error,
               photo: Photo.last,
-              active_pixels: user.available_pixel - user.pixels_today
+              active_pixels: user.available_pixel
             }
           end
         end
