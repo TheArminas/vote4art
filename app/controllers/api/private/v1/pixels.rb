@@ -11,12 +11,19 @@ module Api
           error!({ messages: e.full_messages }, 400)
         end
 
-        namespace :public do
-          before do
-            @serializer_options = { meta: {photo: Class.const_get('Photo').last&.url} }
+        before do
+          unless route.settings[:auth] && route.settings[:auth][:disabled]  
+          authorize
+          @cuser = current_user;
           end
-          resource :pixels do
+          @serializer_options = { meta: {photo: Class.const_get('Photo').last&.url} }
+        
+        end 
+
+        namespace :public do
+            resource :pixels do
             desc 'returns active pixels'
+            route_setting :auth, disabled: true
             get :ready do
               Api::Private::V1::Serializers::PixelSerializer.new(
                 Pixel.ready,
@@ -44,12 +51,8 @@ module Api
         end
 
         resource :pixels do
-          before do
-            authorize
-            @serializer_options = { meta: {photo: Class.const_get('Photo').last&.url} }
-          end
           get :last do
-            pixel = current_user.pixels.last
+            pixel = @cuser.pixels.last
             Api::Private::V1::Serializers::PixelSerializer.new(pixel, @serializer_options).serialized_json
           end
 
@@ -59,15 +62,17 @@ module Api
            requires :color, type: String
          end
           post '/' do
-            binding.pry
-            if current_user.available_pixel > 0  
-            pixel = current_user.pixels.create(params)
+            if @cuser && @cuser.available_pixel > 0  
+            pixel = @cuser.pixels.create(params)
             if pixel.persisted?
               Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
             end
             else
-              error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
-
+              if @cuser.present?
+                error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
+              else
+                error!({ messages: "Autorizacija privaloma" }, 401)
+              end
             end
           end
         end

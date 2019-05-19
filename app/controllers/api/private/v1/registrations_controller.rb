@@ -6,17 +6,21 @@ module Api
         before_action :rewrite_param_names, only: [:create]
 
         def create
+          s = 'break';
           user = User.create(permitted_params)
+          # 
           if user.persisted?
-            current_jwt = JsonWebToken.encode(user_id: user.id)
+            s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
+
+            current_jwt = JsonWebToken.encode({ user_id: user.id }, s)
             response.headers["Authorization"] = current_jwt
             render json: {
-              status: (user.terms_and_conditions ? 'active' : 'authenticated'),
-              active: "Sveikiname sėkmingai užsiregistravus",
-              authenticated: "Turite sutikti su taisyklėmis"
+              status: (user.terms_and_conditions ? 'success' : 'error'),
+              success: "Sveikiname sėkmingai užsiregistravus",
+              error: "Turite sutikti su taisyklėmis"
             } 
           else
-            render json: { error: user.errors }
+            render json: { error: user.errors }, status: 401
           end
         end
 

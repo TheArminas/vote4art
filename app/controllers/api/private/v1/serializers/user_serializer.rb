@@ -8,8 +8,6 @@ module Api
           attributes :username, :provider
 
           meta do |user|
-            binding.pry
-
             {
               active: user.terms_and_conditions,
               status: user.terms_and_conditions ? :success : :error,

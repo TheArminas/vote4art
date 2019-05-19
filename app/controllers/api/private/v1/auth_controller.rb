@@ -5,36 +5,38 @@ module Api
         skip_before_action :verify_authenticity_token
         prepend_before_action :require_no_authentication, only: [:create]
         before_action :rewrite_param_names, only: [:create]
-
         def new
           render json: { msg: 'Authentication required' }, status: 401
         end
 
         def create
           self.resource = warden.authenticate!(auth_options)
-          current_jwt = JsonWebToken.encode(user_id: resource.id)
+          s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
+          current_jwt = JsonWebToken.encode({ user_id: resource.id }, s)
           # return if JwtBlacklist.find_by(jti: current_jwt)
           if sign_in(resource_name, resource)
-            response.headers["Authorization"] = current_jwt
+            response.headers['Authorization'] = current_jwt
             render json: { 
-              status:  (resource.terms_and_conditions ? 'active' : 'authenticated')
+              status: (resource.terms_and_conditions ? 'success' : 'error')
             }
           end
         end
 
         def fb
-          facebook_access_token = params.require(:facebook_access_token) if params[:facebook_access_token].present?
-          user = User.find_or_create_with_facebook_access_token(facebook_access_token)
-
+          s = 'break';
+          if params[:facebook_access_token].present? && (params[:facebook_access_token].length > 9)
+            s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
+            user = User.find_or_create_with_facebook_access_token(params[:facebook_access_token])
+          end
           if user
-            current_jwt = JsonWebToken.encode(user_id: user.id)
+            current_jwt = JsonWebToken.encode({ user_id: user.id }, s)
 
-            response.headers["Authorization"] = current_jwt
+            response.headers['Authorization'] = current_jwt
             render json: { 
-              status: (user.terms_and_conditions ? 'active' : 'authenticated')
+              status: (user.terms_and_conditions ? 'success' : 'error')
             }
           else
-            render json: { msg: 'Facebook access token missing' }, status: 401
+            render json: { message: 'Facebook prisijungimas nepavyko' }, status: 401
           end
         end
         
@@ -42,7 +44,6 @@ module Api
           if headers['Authorization'].present?
             JwtBlackilist.create(jti: headers['Authorization'].split(' ').last)
             render json: { succes: true, msg: 'User logged out  successfully'}
-
           else
             render json: { msg: 'Missing authorization key' }
           end
