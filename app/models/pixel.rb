@@ -36,8 +36,13 @@ class Pixel < ApplicationRecord
   enum status: %i[init ready, safe]
 
   after_commit :check_count
+  after_create :set_increase_pix
 
   private
+
+  def set_increase_pix
+    user.increment!(:pixels_today)
+  end
 
   def check_count
     if Pixel.where(status: 0).count >= 10

@@ -52,7 +52,7 @@ class User < ApplicationRecord
     pixel = total_time / pixel_in_day
     t1 = ((Time.now).beginning_of_day).to_i
     t2 = (Time.now).to_i
-    (((t2 - t1))) / pixel + 1 #  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
+    ((((t2 - t1))) / pixel + 1) - self.pixels_today#  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
   end
 
   def jwt_payload
