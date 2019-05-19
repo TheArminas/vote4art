@@ -1,0 +1,24 @@
+lt:
+  errors: &errors
+    format: ! '%{attribute} %{message}'
+    messages:
+      accepted: turi būti patvirtintas
+      blank: negali būti tuščias
+      confirmation: neteisingai pakartotas
+      empty: negali būti tuščias
+      equal_to: turi būti lygus %{count}
+      even: turi būti lyginis
+      exclusion: užimtas
+      greater_than: turi būti didesnis už %{count}
+      greater_than_or_equal_to: turi būti didesnis arba lygus %{count}
+      inclusion: nenumatyta reikšmė
+      invalid: neteisingas
+      less_than: turi būti mažesnis už %{count}
+      less_than_or_equal_to: turi būti mažesnis arba lygus %{count}
+      not_a_number: ne skaičius
+      odd: turi būti nelyginis
+      taken: Toks vartotojas jau egzistuoja
+      too_long: per ilgas (daugiausiai %{count} simboliai)
+      too_short: per trumpas (mažiausiai %{count} simboliai)
+      wrong_length: neteisingo ilgio (turi būti %{count} simboliai)
+      locked: laikotarpis užrakintas
