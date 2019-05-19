@@ -25,6 +25,8 @@ class User < ApplicationRecord
   validates :username, uniqueness: true
   validates :uid, uniqueness: true, allow_blank: true
   has_many :pixels
+  has_many :rewarded_users
+  has_many :rewards, through: :rewarded_users
 
   def self.find_or_create_with_facebook_access_token(oauth_access_token)
     return unless oauth_access_token
