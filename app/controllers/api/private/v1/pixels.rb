@@ -59,16 +59,16 @@ module Api
            requires :color, type: String
          end
           post '/' do
-            if (current_user.available_pixel > 0)   
+            binding.pry
+            if current_user.available_pixel > 0  
             pixel = current_user.pixels.create(params)
             if pixel.persisted?
               Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
             end
             else
-              error!({ messages: "Išnaudotas limitas" }, 406)
+              error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
 
             end
-          end
           end
         end
       end
