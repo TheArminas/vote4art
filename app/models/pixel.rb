@@ -15,7 +15,7 @@
 class Pixel < ApplicationRecord
   belongs_to :user
 
-  validates :color, length: { in: 12..17 }
+  validates :color, length: { in: 12..18 }
   validates :x, length: { in: 0..1000 }
   validates :y, length: { in: 0..1000 }
 
