@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount Api::Private::V1::Pixels => '/'
   mount Api::Private::V1::Users => '/'
+  mount Api::Private::V1::Rewards => '/'
   devise_for :users,
              path: '',
              path_names: {
