@@ -51,7 +51,7 @@ class User < ApplicationRecord
   def available_pixel
     issankstinis_reward = rewards.find_by(type: 'Isankstinis').where(create_at: (Time.now.beginning..Time.now.end_of_day))
     if issankstinis_reward
-      pixels_today = pixels_today - 'value'
+      pixels_today = pixels_today - 84
     end
     total_time = 86400;
     pixel_in_day = 24;
