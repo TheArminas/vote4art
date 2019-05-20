@@ -49,7 +49,7 @@ class User < ApplicationRecord
   end
 
   def available_pixel
-    issankstinis_reward = rewards.find_by(type: 'Isankstinis').where(create_at: (Time.now.beginning..Time.now.end_of_day))
+    issankstinis_reward = rewards.find_by(tipas: 'Isankstinis').where(create_at: (Time.now.beginning..Time.now.end_of_day))
     if issankstinis_reward
       pixels_today = pixels_today - 84
     end
