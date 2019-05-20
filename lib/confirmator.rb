@@ -26,7 +26,11 @@ class Confirmator
     )
 
     if res.status.to_sym == :ok
-      user.rewards.create(params)
+      res = JSON.parse(res.body)
+      new_params = res.merge(lat: params[:lat], long: params[:long])
+      if user
+        user.rewards.create(new_params)
+      end
     end
   end
 

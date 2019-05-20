@@ -21,14 +21,16 @@ class Pixel < ApplicationRecord
 
   scope :ready, lambda {
     where(status: [0, 1])
-      .select('distinct on(x, y) x, y, color, user_id')
-      .order(:x)
+      .select(:x, :y, :color)
+      .group(:x, :y, :color)
+      .order('MAX(id) DESC')
   }
 
   scope :init_ready, lambda {
     where(status: 0)
-      .select('distinct on(x, y) x, y, color, user_id')
-      .order(:x)
+      .select(:x, :y, :color)
+      .group(:x, :y, :color)
+      .order('MAX(id) DESC')
   }
 
   scope :by_coordinates, ->(params) { where('pixels.x = ? AND pixels.y = ?', params[:x], params[:y]) }

@@ -20,7 +20,11 @@ module Api
             requires :hash, type: String
           end
           post :reward do
-            Reward.confirm(params, @c_user.id)
+            if Reward.confirm(params, @c_user.id)
+              Api::Private::V1::Serializers::UserSerializer.new(@c_user).serialized_json
+            else
+              error!({ messages: "Veiksmas negalimas" }, 401)
+            end
           end
         end
       end
