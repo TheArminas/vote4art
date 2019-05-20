@@ -6,30 +6,29 @@ class Confirmator
     @user = user
   end
 
-  def headers
-    {
-        'Content-Type': 'application/json',
-        'kasyra': 'naujas prikolas'
-    }
-  end
+  # def headers
+
+  # end
 
   def connect
+    headers = {
+      'Content-Type': 'application/json',
+      'kasyra': 'naujas prikolas'
+    }
+
     res = HTTP.headers(headers).post(
       END_POINT,
       json: {
-        reward: {
-          hash: params[:hash],
-          lat: params[:lat],
-          long: params[:long]
-        }
+        hash: params[:hash],
+        lat: params[:lat],
+        long: params[:long]
       }
     )
-
     if res.status.to_sym == :ok
       res = JSON.parse(res.body)
       new_params = res.merge(lat: params[:lat], long: params[:long])
       if user
-        user.rewards.create(new_params)
+        user.rewards.create(new_params) unless user.rewards.find_by(tipas: params[:tipas]).present?
       end
     end
   end

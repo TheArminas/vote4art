@@ -15,7 +15,6 @@ module Api
           def decoded_auth_token
             # decode bus dynaminis pagal ip ir browseri encode()
             @decoded_auth_token ||= JsonWebToken.decode(http_auth_header, dynamic_secret)
-            logger.info("User-input: #{@decoded_auth_token&.symbolize_keys}")
 
             @decoded_auth_token&.symbolize_keys
           end
