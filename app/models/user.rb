@@ -49,18 +49,19 @@ class User < ApplicationRecord
   end
 
   def available_pixel
-    pixels_today ||= 0
+    pixto = pixels_today;
     issankstinis_reward = rewards.find_by(tipas: 'Isankstinis')
     # .where(create_at: (Time.now.beginning_of_day..Time.now.end_of_day))
-    if issankstinis_reward
-      pixels_today = pixels_today - 84
+    if issankstinis_reward.present?
+      pixto = pixels_today - 84
     end
+  
     total_time = 86400;
     pixel_in_day = 24;
     pixel = total_time / pixel_in_day
     t1 = ((Time.now).beginning_of_day).to_i
     t2 = (Time.now).to_i
-    ((((t2 - t1))) / pixel + 1)  - pixels_today#  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
+    ((((t2 - t1))) / pixel + 1)  - pixto #  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
   end
 
   def jwt_payload

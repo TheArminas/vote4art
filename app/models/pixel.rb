@@ -44,6 +44,7 @@ class Pixel < ApplicationRecord
 
   def set_increment_pix
     user.increment!(:pixels_today)
+    user.increment!(:total_pixels)
     user.save
   end
 
