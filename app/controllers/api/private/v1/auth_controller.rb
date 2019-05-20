@@ -24,9 +24,9 @@ module Api
 
         def fb
           s = 'break';
-          if params[:facebook_access_token].present? && (params[:facebook_access_token].length > 9)
+          if params[:facebook].present?
             s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
-            user = User.find_or_create_with_facebook_access_token(params[:facebook_access_token])
+            user = User.find_or_create_with_facebook_uid(params[:facebook])
           end
           if user
             current_jwt = JsonWebToken.encode({ user_id: user.id }, s)

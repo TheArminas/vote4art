@@ -27,18 +27,17 @@ class User < ApplicationRecord
   has_many :pixels
   has_many :rewarded_users
   has_many :rewards, through: :rewarded_users
+  # has_many :rewarded_pixels
 
-  def self.find_or_create_with_facebook_access_token(oauth_access_token)
-    return unless oauth_access_token
-    graph = Koala::Facebook::API.new(oauth_access_token)
-    profile = graph.get_object('me', fields: ['name', 'email'])
+  def self.find_or_create_with_facebook_uid(params)
+    return unless params[:uid]
 
-    user = User.find_or_create_by(uid: profile['id']) do |user|
+    user = User.find_or_create_by(uid: params[:uid]) do |user|
       return user unless user.new_record?
-      user.username = profile['name']
-      user.uid = profile['id']
+      user.username = params[:name]
+      user.uid = params[:uid]
       user.provider = 'facebook'
-      user.password = profile['id']
+      user.password = params[:uid]
       user.save
     end
     user
@@ -55,6 +54,8 @@ class User < ApplicationRecord
     if issankstinis_reward.present?
       pixto = pixels_today - 84
     end
+    # rewarded_pixels = rewarded_pixels.active.sum(:count)
+    # rewarded_pixels.update_all(status: 1)
   
     total_time = 86400;
     pixel_in_day = 24;
