@@ -43,13 +43,19 @@ class Pixel < ApplicationRecord
   private
 
   def set_increment_pix
-    user.increment!(:pixels_today)
-    user.increment!(:total_pixels)
-    user.save
+    if user.available_pixel.to_i > 0
+      user.increment!(:pixels_today)
+      user.increment!(:total_pixels)
+      user.save
+    elsif user.user_rewards.to_i > 0
+      user.decrement!(:user_rewards)
+      user.increment!(:total_pixels)
+      user.save
+    end
   end
 
   def check_count
-    if Pixel.where(status: 0).count >= 10
+    if Pixel.where(status: 0).count >= 250
       resp = Generators::Photo.new(pixels: Pixel.init_ready.pluck(:x, :y, :color)).connect
       if resp
         Pixel.where(status: 1).update_all(status: 2)

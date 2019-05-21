@@ -26,6 +26,16 @@ module Api
               error!({ messages: "Veiksmas negalimas" }, 401)
             end
           end
+          params do
+            requires :hash, type: String
+          end
+          post :reklaminis do
+            if Reward.add_to_user(hash: params[:hash], user:  @c_user)
+              Api::Private::V1::Serializers::UserSerializer.new(@c_user).serialized_json
+            else
+              error!({msg: 'Klaida'})
+            end
+          end
         end
       end
     end
