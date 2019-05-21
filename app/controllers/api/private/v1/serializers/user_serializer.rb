@@ -5,12 +5,13 @@ module Api
         class UserSerializer
           include FastJsonapi::ObjectSerializer
 
-          attributes :username
+          attributes :username, :user_rewards
 
           meta do |user|
             {
               status: user.terms_and_conditions ? :success : :error,
-              active_pixels: user.available_pixel
+              active_pixels: user.available_pixel,
+              photo: Photo.last,
             }
           end
         end
