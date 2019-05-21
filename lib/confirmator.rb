@@ -6,10 +6,6 @@ class Confirmator
     @user = user
   end
 
-  # def headers
-
-  # end
-
   def connect
     headers = {
       'Content-Type': 'application/json',
@@ -28,7 +24,10 @@ class Confirmator
       res = JSON.parse(res.body)
       new_params = res.merge(lat: params[:lat], long: params[:long])
       if user
-        user.rewards.create(new_params) unless user.rewards.find_by(tipas: params[:tipas]).present?
+        rew = user.rewards.create(new_params) unless user.rewards.find_by(tipas: params[:tipas]).present?
+        if rew
+          user.increment(:rewards, 84)
+        end
       end
     end
   end

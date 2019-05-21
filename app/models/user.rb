@@ -27,7 +27,7 @@ class User < ApplicationRecord
   has_many :pixels
   has_many :rewarded_users
   has_many :rewards, through: :rewarded_users
-  # has_many :rewarded_pixels
+  has_many :rewarded_pixels
 
   def self.find_or_create_with_facebook_uid(params)
     return unless params[:uid]
@@ -48,21 +48,12 @@ class User < ApplicationRecord
   end
 
   def available_pixel
-    pixto = pixels_today;
-    issankstinis_reward = rewards.find_by(tipas: 'Isankstinis')
-    # .where(create_at: (Time.now.beginning_of_day..Time.now.end_of_day))
-    if issankstinis_reward.present?
-      pixto = pixels_today - 84
-    end
-    # rewarded_pixels = rewarded_pixels.active.sum(:count)
-    # rewarded_pixels.update_all(status: 1)
-  
     total_time = 86400;
     pixel_in_day = 24;
     pixel = total_time / pixel_in_day
     t1 = ((Time.now).beginning_of_day).to_i
     t2 = (Time.now).to_i
-    ((((t2 - t1))) / pixel + 1)  - pixto #  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
+    ((((t2 - t1))) / pixel + 1)#  pridedam atimti count sosdienos jai atsukam valanda t1 tada dadedam p;
   end
 
   def jwt_payload

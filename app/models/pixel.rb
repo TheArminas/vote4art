@@ -43,9 +43,15 @@ class Pixel < ApplicationRecord
   private
 
   def set_increment_pix
-    user.increment!(:pixels_today)
-    user.increment!(:total_pixels)
-    user.save
+    if (user.available_pixel.to_i - user.pixels_today) < 1
+      user.decrement!(:rewards)
+      user.increment!(:total_pixels)
+      user.save
+    else
+      user.increment!(:pixels_today)
+      user.increment!(:total_pixels)
+      user.save
+    end
   end
 
   def check_count
