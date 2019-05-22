@@ -62,16 +62,17 @@ module Api
            requires :color, type: String
           end
           post '/' do
-            if ((@cuser && (@cuser.available_pixel + @cuser.available_pixel)) > 0)
-              pixel = @cuser.pixels.create(params)
-            end
+            if @cuser && (@cuser.available_pixel + user_rewards ) > 0  
+            pixel = @cuser.pixels.create(params)
             if pixel.persisted?
               Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
             end
-            if @cuser.present?
-              error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
             else
-              error!({ messages: "Autorizacija privaloma" }, 401)
+              if @cuser.present?
+                error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
+              else
+                error!({ messages: "Autorizacija privaloma" }, 401)
+              end
             end
           end
         end

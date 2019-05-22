@@ -17,6 +17,7 @@
 #  total_pixels           :integer          default(0)
 #  terms_and_conditions   :boolean          default(FALSE)
 #  user_rewards           :integer          default(0)
+#  pix_rew                :integer          default(0)
 #
 
 class User < ApplicationRecord
