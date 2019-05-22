@@ -8,7 +8,7 @@ module Api
           attributes :username
 
           attribute :pixels do |object|
-            object.available_pixel
+            object.available_pixel - object.pix_rew
           end
           meta do |user|
             {
