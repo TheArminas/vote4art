@@ -16,8 +16,8 @@ class Confirmator
       END_POINT,
       json: {
         hash: params[:hash],
-        lat: 54.695942 || params[:lat],
-        long: 25.279065 || params[:long]
+        lat:  params[:lat],
+        long: params[:long]
       }
     )
     if res.status.to_sym == :ok
