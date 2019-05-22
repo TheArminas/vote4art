@@ -33,7 +33,8 @@ module Api
 
             response.headers['Authorization'] = current_jwt
             render json: { 
-              status: (user.terms_and_conditions ? 'success' : 'error')
+              status: (user.terms_and_conditions ? 'success' : 'error'),
+              new_user: user.created_at > ( Time.now - 10.minutes )
             }
           else
             render json: { message: 'Facebook prisijungimas nepavyko' }, status: 401
