@@ -21,16 +21,12 @@ class Pixel < ApplicationRecord
 
   scope :ready, lambda {
     where(status: [0, 1])
-      .select(:x, :y, :color)
-      .group(:x, :y, :color)
-      .order('MAX(id) DESC')
+      .order(:created_at)
   }
 
   scope :init_ready, lambda {
     where(status: 0)
-      .select(:x, :y, :color)
-      .group(:x, :y, :color)
-      .order('MAX(id) DESC')
+      .order(:created_at)
   }
 
   scope :by_coordinates, ->(params) { where('pixels.x = ? AND pixels.y = ?', params[:x], params[:y]) }
@@ -43,9 +39,15 @@ class Pixel < ApplicationRecord
   private
 
   def set_increment_pix
-    user.increment!(:pixels_today)
-    user.increment!(:total_pixels)
-    user.save
+    if user.available_pixel.to_i > 0
+      user.increment!(:pixels_today)
+      user.increment!(:total_pixels)
+      user.save
+    elsif user.user_rewards.to_i > 0
+      user.decrement!(:user_rewards)
+      user.increment!(:total_pixels)
+      user.save
+    end
   end
 
   def check_count
