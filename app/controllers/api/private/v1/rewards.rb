@@ -20,10 +20,15 @@ module Api
             requires :hash, type: String
           end
           post :reward do
-            if Reward.confirm(params, @c_user.id)
-              Api::Private::V1::Serializers::UserSerializer.new(@c_user).serialized_json
+            rew = Reward.confirm(params, @c_user.id)
+            case rew
+            when false
+              error!({ messages: "Lokacijos neatitikimas" }, 401)
+            when 1
+              error!({ messages: "Apdovanojimas panaudotas" }, 401)
             else
-              error!({ messages: "Veiksmas negalimas" }, 401)
+              user = Api::Private::V1::Serializers::UserSerializer.new(@c_user)
+              user.serialized_json
             end
           end
           params do

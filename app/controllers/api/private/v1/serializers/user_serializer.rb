@@ -6,12 +6,13 @@ module Api
           include FastJsonapi::ObjectSerializer
 
           attributes :username, :user_rewards
-
+          attribute :a_pixels do |object|
+            object.available_pixel + object.user_rewards
+          end
           meta do |user|
             {
               status: user.terms_and_conditions ? :success : :error,
-              active_pixels: user.available_pixel,
-              photo: Photo.last,
+              photo: Photo.last
             }
           end
         end

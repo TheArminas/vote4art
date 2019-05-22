@@ -16,17 +16,17 @@ class Confirmator
       END_POINT,
       json: {
         hash: params[:hash],
-        lat: params[:lat],
-        long: params[:long]
+        lat: 54.695942 || params[:lat],
+        long: 25.279065 || params[:long]
       }
     )
     if res.status.to_sym == :ok
       res = JSON.parse(res.body)
-      new_params = res.merge(lat: params[:lat], long: params[:long])
+      new_params = res.merge(lat: params[:lat], long: params[:long]).symbolize_keys
       if user
         rew = user.rewards.create(new_params) unless user.rewards.find_by(tipas: params[:tipas]).present?
         if rew
-          user.increment(:user_rewards, 84)
+          user.increment!(:user_rewards, 84)
         end
       end
     end

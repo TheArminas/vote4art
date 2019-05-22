@@ -21,16 +21,12 @@ class Pixel < ApplicationRecord
 
   scope :ready, lambda {
     where(status: [0, 1])
-      .select(:x, :y, :color)
-      .group(:x, :y, :color)
-      .order('MAX(id) DESC')
+      .order(:created_at)
   }
 
   scope :init_ready, lambda {
     where(status: 0)
-      .select(:x, :y, :color)
-      .group(:x, :y, :color)
-      .order('MAX(id) DESC')
+      .order(:created_at)
   }
 
   scope :by_coordinates, ->(params) { where('pixels.x = ? AND pixels.y = ?', params[:x], params[:y]) }

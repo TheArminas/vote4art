@@ -62,7 +62,7 @@ module Api
            requires :color, type: String
          end
           post '/' do
-            if @cuser && @cuser.available_pixel > 0  
+            if @cuser && @cuser.available_pixel + @cuser.user_rewards > 0  
             pixel = @cuser.pixels.create(params)
             if pixel.persisted?
               Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
