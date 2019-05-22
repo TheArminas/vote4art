@@ -5,8 +5,8 @@
 #  id         :bigint           not null, primary key
 #  color      :string
 #  user_id    :bigint           not null
-#  x          :string
-#  y          :string
+#  x          :integer
+#  y          :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  status     :integer          default("init")

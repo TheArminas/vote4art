@@ -14,6 +14,10 @@
 #  jti                    :string
 #  provider               :string
 #  uid                    :string
+#  pixels_today           :integer          default(0)
+#  total_pixels           :integer          default(0)
+#  terms_and_conditions   :boolean          default(FALSE)
+#  user_rewards           :integer          default(0)
 #
 <<<<<<< HEAD
 #  id                     :bigint           not null, primary key

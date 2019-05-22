@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: rewards
+#
+#  id         :bigint           not null, primary key
+#  lat        :string
+#  long       :string
+#  hashie     :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  tipas      :string
+#  valid_till :datetime
+#  value      :integer
+#
+
 class Reward < ApplicationRecord
   has_many :rewarded_users
   has_many :users, through: :rewarded_users
@@ -14,7 +29,7 @@ class Reward < ApplicationRecord
         return false if rew.user_ids.include? user.id
         rew.users << user
         value = rew.value
-        user.increment(:user_rewards, value)
+        user.increment(:pix_rew, value)
         user.save
       else
         false

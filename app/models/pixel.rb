@@ -5,8 +5,8 @@
 #  id         :bigint           not null, primary key
 #  color      :string
 #  user_id    :bigint           not null
-#  x          :string
-#  y          :string
+#  x          :integer
+#  y          :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  status     :integer          default("init")
@@ -43,8 +43,8 @@ class Pixel < ApplicationRecord
       user.increment!(:pixels_today)
       user.increment!(:total_pixels)
       user.save
-    elsif user.user_rewards.to_i > 0
-      user.decrement!(:user_rewards)
+    elsif user.pix_rew.to_i > 0
+      user.decrement!(:pix_rew)
       user.increment!(:total_pixels)
       user.save
     end
