@@ -16,7 +16,7 @@ class Confirmator
       END_POINT,
       json: {
         hash: params[:hash],
-        lat:  params[:lat],
+        lat: params[:lat],
         long: params[:long]
       }
     )
