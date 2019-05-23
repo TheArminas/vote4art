@@ -19,7 +19,7 @@ class Reward < ApplicationRecord
 
   HASH = ['9282c043', 'b357906c', 'bdb4defa', 'bdb4dfff'].freeze
 
-  TIPAI = ['Isankstinis', 'Dalivavau'].freeze
+  TIPAI = ['Isankstinis', 'Apylinkes'].freeze
   class << self
     def add_to_user(options = {})
       hash = options[:hash]
