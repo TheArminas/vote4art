@@ -17,7 +17,8 @@ class Reward < ApplicationRecord
   has_many :rewarded_users
   has_many :users, through: :rewarded_users
 
-  HASH = ['9282c043', 'b357906c', 'bdb4defa'].freeze
+  HASH = ['9282c043', 'b357906c', 'bdb4defa', 'bdb4dfff'].freeze
+
   TIPAI = ['Isankstinis', 'Dalivavau'].freeze
   class << self
     def add_to_user(options = {})

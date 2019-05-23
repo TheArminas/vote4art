@@ -17,8 +17,7 @@ module Api
           @cuser = current_user;
           end
           @serializer_options = { meta: {photo: Class.const_get('Photo').last&.url} }
-        
-        end 
+        end
 
         namespace :public do
             resource :pixels do
