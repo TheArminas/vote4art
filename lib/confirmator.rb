@@ -26,7 +26,7 @@ class Confirmator
       if user
         rew = user.rewards.create(new_params) unless user.rewards.find_by(tipas: params[:tipas]).present?
         if rew
-          user.increment!(:pix_rew, 84)
+          user.increment!(:pix_rew, 168)
         end
       end
     end
