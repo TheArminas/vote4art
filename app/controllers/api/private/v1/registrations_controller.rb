@@ -7,6 +7,7 @@ module Api
 
         def create
           s = 'break';
+          exist = User.find_by(uniid: permitted_params['uniid'])
           user = User.create(permitted_params)
           # 
           if user.persisted?
@@ -27,11 +28,18 @@ module Api
         private
 
         def permitted_params
-          params.require(:user).permit(:username, :password, :password_confirmation, :terms_and_conditions)
+          params.require(:user).permit(:username, :password, :password_confirmation, :terms_and_conditions, :uniid)
         end
 
         def rewrite_param_names
-          request.params[:user] = { username: request.params[:username], password: request.params[:password], password_confirmation: request.params[:password_confirmation], terms_and_conditions: request.params[:terms_and_conditions] }
+          ip = request.env['HTTP_X_FORWARDED_FOR']&.to_s || 'testas'
+          request.params[:user] = { 
+            username: request.params[:username], 
+            password: request.params[:password], 
+            password_confirmation: request.params[:password_confirmation], 
+            terms_and_conditions: request.params[:terms_and_conditions],  
+            uniid: ip.concat(request.params[:finger].to_s)
+          }
         end
       end
     end
