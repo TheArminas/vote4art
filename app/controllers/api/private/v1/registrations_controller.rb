@@ -32,7 +32,7 @@ module Api
         end
 
         def rewrite_param_names
-          ip = request.env['HTTP_X_FORWARDED_FOR']&.to_s || 'testas'
+          ip = request.env['HTTP_X_FORWARDED_FOR'] || 'testas'
           request.params[:user] = { 
             username: request.params[:username], 
             password: request.params[:password], 
