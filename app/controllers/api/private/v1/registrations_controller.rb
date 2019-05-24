@@ -38,7 +38,7 @@ module Api
             password: request.params[:password], 
             password_confirmation: request.params[:password_confirmation], 
             terms_and_conditions: request.params[:terms_and_conditions],  
-            uniid: ip.concat(request.params[:finger].to_s)
+            uniid: `#{ip}-#{request.params[:finger]}`
           }
         end
       end
