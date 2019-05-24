@@ -28,7 +28,6 @@ module Api
 
           def dynamic_secret
             s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
-
           end
 
           def uni_log
@@ -37,8 +36,7 @@ module Api
               @user
                 .update_attribute(:uniid, "#{request.ip}-#{headers['Finger']}")
               else
-              @user
-                .update_attribute(:uniid, "#{request.ip}-nezinomas")
+                true
               end
             end
 
