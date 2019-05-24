@@ -6,10 +6,13 @@ module Api
         before_action :rewrite_param_names, only: [:create]
 
         def create
-          s = 'break';
-          # exist = User.find_by(uniid: permitted_params['uniid'])
-          user = User.create(permitted_params)
-          # 
+          s = 'break'
+          
+          exist = User.find_by(uniid: permitted_params['uniid'])
+          return render json: { error: "Limitas pasiektas" }, status: 401  if exist.persisted?
+          user = User.create(permitted_params)  if exist.blank?
+
+          
           if user.persisted?
             s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
 
@@ -32,8 +35,8 @@ module Api
         end
 
         def rewrite_param_names
-          ip = request.remote_ip || 'testas'
-          request.params[:user] = { 
+          ip = request.env['HTTP_X_FORWARDED_FOR'] || 'testas'
+          request.params[:user] = {
             username: request.params[:username], 
             password: request.params[:password], 
             password_confirmation: request.params[:password_confirmation], 
