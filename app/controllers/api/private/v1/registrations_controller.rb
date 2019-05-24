@@ -14,7 +14,7 @@ module Api
 
           
           if user.persisted?
-            s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
+            s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||"wmsecret") 
 
             current_jwt = JsonWebToken.encode({ user_id: user.id }, s)
             response.headers["Authorization"] = current_jwt
