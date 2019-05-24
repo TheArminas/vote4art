@@ -7,7 +7,7 @@ module Api
 
         def create
           s = 'break';
-          exist = User.find_by(uniid: permitted_params['uniid'])
+          # exist = User.find_by(uniid: permitted_params['uniid'])
           user = User.create(permitted_params)
           # 
           if user.persisted?
@@ -38,7 +38,7 @@ module Api
             password: request.params[:password], 
             password_confirmation: request.params[:password_confirmation], 
             terms_and_conditions: request.params[:terms_and_conditions],  
-            uniid: `#{ip}-#{request.params[:finger]}`
+            uniid: "#{ip}-#{request.params[:finger]}"
           }
         end
       end
