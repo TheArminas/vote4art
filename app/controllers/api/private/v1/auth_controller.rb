@@ -10,6 +10,7 @@ module Api
         end
 
         def create
+          return if resource.current_state == 'ban'
           self.resource = warden.authenticate!(auth_options)
           s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
           current_jwt = JsonWebToken.encode({ user_id: resource.id }, s)
@@ -17,7 +18,8 @@ module Api
           if sign_in(resource_name, resource)
             response.headers['Authorization'] = current_jwt
             render json: { 
-              status: (resource.terms_and_conditions ? 'success' : 'error')
+              status: (resource.terms_and_conditions ? 'success' : 'error'),
+              current_state: 'logined'
             }
           end
         end
@@ -28,7 +30,7 @@ module Api
             s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
             user = User.find_or_create_with_facebook_uid(params)
           end
-          if user
+          if user && user.current_state != 'ban'
             current_jwt = JsonWebToken.encode({ user_id: user.id }, s)
 
             response.headers['Authorization'] = current_jwt

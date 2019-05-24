@@ -34,6 +34,11 @@ class User < ApplicationRecord
   has_many :rewards, through: :rewarded_users
   has_many :rewarded_pixels
 
+  def self.ban(params)
+    user = find_by(id: params[:user_id])
+    user.update_attribute(:current_state, 'ban')
+  end
+
   def self.find_or_create_with_facebook_uid(params)
     return unless params[:uid]
 
@@ -43,6 +48,7 @@ class User < ApplicationRecord
       user.uid = params[:uid]
       user.provider = 'facebook'
       user.password = params[:uid]
+      user.current_state = 'logined'
       user.save
     end
     user
