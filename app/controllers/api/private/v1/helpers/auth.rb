@@ -4,10 +4,17 @@ module Api
       module Helpers
         module Auth
           def authorize
-            http_auth_header
+            @user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token && http_auth_header
+            if @user.present?
+              uni_log
+            else
+              error!(msg: "Autorizacija privaloma!!!", status: 401) 
+            end
+
           end
+
           def current_user
-            @user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token
+            @user
           end
           
           private
@@ -20,16 +27,27 @@ module Api
           end
 
           def dynamic_secret
-            return request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
+            s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||="wmsecret") 
 
           end
 
+          def uni_log
+              # dadeti prisijungimo laika 
+            if headers['Finger'].present?
+              @user
+                .update_attribute(:uniid, "#{request.ip}-#{headers['Finger']}")
+              else
+              @user
+                .update_attribute(:uniid, "#{request.ip}-nezinomas")
+              end
+            end
+
           def http_auth_header
             if headers['Authorization'].present?
-              # tikrinti bariera
+              # tikrinti bariera !!! 
               return headers['Authorization'].split(' ').last
             else
-              error!(msg: "Autorizacija privaloma", status: 401)
+              error!(msg: "Autorizacija privaloma!", status: 401)
             end
           end
 
