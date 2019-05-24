@@ -55,7 +55,7 @@ class Pixel < ApplicationRecord
       resp = Generators::Photo.new(pixels: Pixel.init_ready.pluck(:x, :y, :color)).connect
       if resp
         Pixel.where(status: 1).update_all(status: 2)
-        Pixel.where(status: 0).update_all(status: 1)
+        Pixel.where(status: 0).update_all(status: 1, updated_at: DateTime.now)
       end 
     end
   end
