@@ -16,7 +16,7 @@ module Api
             current_jwt = JsonWebToken.encode({ user_id: user.id }, s)
             response.headers["Authorization"] = current_jwt
             render json: {
-              status: (user.terms_and_conditions ? 'success' : 'error'),
+              status: (user.terms_and_condqitions ? 'success' : 'error'),
               success: "Sveikiname sėkmingai užsiregistravus",
               error: "Turite sutikti su taisyklėmis"
             } 
@@ -32,7 +32,7 @@ module Api
         end
 
         def rewrite_param_names
-          ip = request.env['HTTP_X_FORWARDED_FOR']&.to_s || 'testas'
+          ip = request.env['X-Real-IP']&.to_s || 'testas'
           request.params[:user] = { 
             username: request.params[:username], 
             password: request.params[:password], 
