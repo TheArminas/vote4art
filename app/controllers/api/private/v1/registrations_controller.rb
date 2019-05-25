@@ -9,7 +9,7 @@ module Api
           s = 'break'
           
           exist = User.find_by(uniid: permitted_params['uniid'])
-          return render json: { error: "Limitas pasiektas" }, status: 401  if exist.present?
+          return render json: { error: "Nesilaikantys taisyklių dalyviai bus šaliniami." }, status: 401  if exist.present?
           user = User.create(permitted_params)  if exist.blank?
               binding.pry
           
