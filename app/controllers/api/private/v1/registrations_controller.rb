@@ -11,9 +11,8 @@ module Api
           exist = User.find_by(uniid: permitted_params['uniid'])
           return render json: { error: "Nesilaikantys taisyklių dalyviai bus šaliniami." }, status: 401  if exist.present?
           user = User.create(permitted_params)  if exist.blank?
-              binding.pry
-          
-          if user.persisted?
+         
+          if user.present?
             s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||"wmsecret") 
 
             current_jwt = JsonWebToken.encode({ user_id: user.id }, s)
