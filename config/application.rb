@@ -42,7 +42,7 @@ module Vote4art
     # config.middleware.insert_after ActionDispatch::Cookies, ActionDispatch::Session::CookieStore
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'https://vote4art.eu', 'https://apinode.vote4art.eu'
+        origins 'https://vote4art.eu', 'https://apinode.vote4art.eu', 'http://localhost:8080'
         resource '*',
           headers: :any,
           methods: :any,

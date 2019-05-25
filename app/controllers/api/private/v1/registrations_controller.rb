@@ -9,9 +9,9 @@ module Api
           s = 'break'
           
           exist = User.find_by(uniid: permitted_params['uniid'])
-          render json: { error: "Limitas pasiektas" }, status: 401  if exist.present?
+          return render json: { error: "Limitas pasiektas" }, status: 401  if exist.present?
           user = User.create(permitted_params)  if exist.blank?
-
+              binding.pry
           
           if user.persisted?
             s = request.env['HTTP_USER_AGENT']&.to_s&.concat(request.env['HTTP_X_FORWARDED_FOR'] ||"wmsecret") 
@@ -37,10 +37,10 @@ module Api
         def rewrite_param_names
           ip = request.remote_ip || 'testas'
           request.params[:user] = {
-            username: request.params[:username], 
-            password: request.params[:password], 
+            username: request.params[:username],
+            password: request.params[:password],
             password_confirmation: request.params[:password_confirmation], 
-            terms_and_conditions: request.params[:terms_and_conditions],  
+            terms_and_conditions: request.params[:terms_and_conditions], 
             uniid: "#{ip}-#{request.params[:finger]}"
           }
         end
