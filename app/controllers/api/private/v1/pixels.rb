@@ -61,11 +61,13 @@ module Api
            requires :color, type: String
           end
           post '/' do
-            if @cuser && (@cuser.available_pixel + @cuser.pix_rew ) > 0  
-            pixel = @cuser.pixels.create(params)
-            if pixel.persisted?
-              Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
-            end
+            error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
+
+            # if @cuser && (@cuser.available_pixel + @cuser.pix_rew ) > 0  
+            # pixel = @cuser.pixels.create(params)
+            # if pixel.persisted?
+            #   Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
+            # end
             else
               if @cuser.present?
                 error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
