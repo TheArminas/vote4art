@@ -68,13 +68,13 @@ module Api
             # if pixel.persisted?
             #   Api::Private::V1::Serializers::PixelSerializer.new(Pixel.ready, @serializer_options).serialized_json
             # end
-            else
-              if @cuser.present?
-                error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
-              else
-                error!({ messages: "Autorizacija privaloma" }, 401)
-              end
-            end
+            # else
+            #   if @cuser.present?
+            #     error!({ messages: "Išnaudotas pikseliu limitas" }, 406)
+            #   else
+            #     error!({ messages: "Autorizacija privaloma" }, 401)
+            #   end
+            # end
           end
         end
       end
