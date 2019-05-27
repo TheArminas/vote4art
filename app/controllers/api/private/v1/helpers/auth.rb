@@ -14,7 +14,9 @@ module Api
           end
 
           def current_user
-            @user
+            # @user
+            error!(msg: "Autorizacija privaloma!!!", status: 401) 
+
           end
           
           private
