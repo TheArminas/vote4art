@@ -4,12 +4,12 @@ module Api
       module Helpers
         module Auth
           def authorize
-            @user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token && http_auth_header
-            if @user.present?
-              uni_log
-            else
+            # @user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token && http_auth_header
+            # if @user.present?
+            #   uni_log
+            # else
               error!(msg: "Autorizacija privaloma!!!", status: 401) 
-            end
+            # end
 
           end
 
