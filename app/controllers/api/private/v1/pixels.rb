@@ -16,7 +16,7 @@ module Api
           authorize
           @cuser = current_user;
           end
-          @serializer_options = { meta: {photo: '/bg_1558904364523.png'} }
+          @serializer_options = { meta: {photo: 'bg_1558904364523.png'} }
         end
 
         namespace :public do
